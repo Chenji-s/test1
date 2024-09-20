@@ -57,3 +57,37 @@ y = False
 print(x and y)  # False，因为y是False
 print(x or y)   # True，因为x是True
 print(not x)    # False，因为x是True，取反后为False
+
+'''
+4. Integers（整数）
+Python可以无限精度地表示整数(即，任意大，只要内存中有剩余空间来存储它们!)。
+整数类型用int表示。我们可以用通常的方法对整数进行加、减、乘、除运算:
+ '''
+'''
+5. Floating Point Numbers（浮点数）
+浮点数（float）是用来表示带有小数点的数字。
+它们可以表示非常大的或非常小的数字，并且可以包含小数部分。
+'''
+print(3.456 + 11.888)
+print(99.9 / 0.1)
+print(2.0 * 11.4)
+print(1.5e-5 + 1.0e-6)
+print(type(2.0 * 11.4))
+
+'''
+
+6. Type-casting（类型转换）
+类型转换是指将一种数据类型转换为另一种数据类型。
+Python提供了几个内置函数来进行显式类型转换，比如 int()、float() 和 str()
+'''
+#手动类型转换：有时，我们需要显式地改变对象的类型。
+# 这可以通过内置函数如 int()、float() 或 str() 来完成。
+
+i = 2566
+print(type(i))        # 输出 <class 'int'>
+print(float(i))       # 输出 2566.0，转换为浮点数
+print(str(i))         # 输出 '2566'，转换为字符串
+
+string_number = '273'
+print(float(string_number))  # 输出 273.0，字符串转换为浮点数
+print(int(string_number))    # 输出 273，字符串转换为整数
