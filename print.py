@@ -24,3 +24,13 @@ print(b)
 # 定义一个列表
 c = [1, 2, 3, 4, 5]
 print(c)
+'''
+Python 作为计算器
+
+'''
+print(2 + 3)
+print(2 - 3)
+print(2 * 3)
+print(2 / 3)
+print(2 ** 3)
+
