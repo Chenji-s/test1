@@ -99,6 +99,6 @@ def get_angle(coords):
     if angle < 0:
         angle += 2 * math.pi
     
-    return angle
+    return slope
 
 
