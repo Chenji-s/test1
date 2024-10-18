@@ -64,6 +64,8 @@ def get_clock_hands(clock_RGB):
 
 
 
+from scipy import stats
+import math
 def get_angle(coords):
     # 提取行（row）和列（column）的坐标
     rows = coords[:, 0]
