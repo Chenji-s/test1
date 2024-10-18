@@ -64,15 +64,33 @@ def get_clock_hands(clock_RGB):
 
 
 
-from scipy import stats
+
 import math
+def manual_linear_regression(x, y):
+    # 数据点的数量
+    n = len(x)
+    
+    # 计算所有和
+    sum_x = np.sum(x)
+    sum_y = np.sum(y)
+    sum_x2 = np.sum(x**2)
+    sum_xy = np.sum(x * y)
+    
+    # 计算斜率 m
+    m = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x**2)
+    
+    # 计算截距 b
+    b = (sum_y - m * sum_x) / n
+    
+    return m, b
+
 def get_angle(coords):
     # 提取行（row）和列（column）的坐标
     rows = coords[:, 0]
     cols = coords[:, 1]
     
-    # 进行线性回归，找出最佳拟合线的斜率和截距
-    slope, intercept, _, _, _ = stats.linregress(cols, rows)
+    # 手动进行线性回归计算斜率和截距
+    slope, intercept = manual_linear_regression(cols, rows)
     
     # 计算最佳拟合线的角度（弧度）
     angle = np.arctan2(-slope, 1)  # 使用 -slope 因为 y 是行数，x 是列数，方向相反
