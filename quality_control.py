@@ -43,8 +43,8 @@ def get_clock_hands(clock_RGB):
     minute_hand_pixels = []
     
     # 定义红色和绿色的颜色阈值范围
-    red_threshold = [0.6, 0.0, 0.0]  # 红色像素
-    green_threshold = [0.0, 0.6, 0.0]  # 绿色像素
+    red_threshold = [0.7, 0.2, 0.3]  # 红色像素
+    green_threshold = [0.3, 0.7, 0.1]  # 绿色像素
 
     # 遍历图像中的每个像素
     for i in range(clock_RGB.shape[0]):  # 遍历行
@@ -61,3 +61,4 @@ def get_clock_hands(clock_RGB):
 
     # 将列表转换为 NumPy 数组并返回
     return np.array(hour_hand_pixels), np.array(minute_hand_pixels)
+
