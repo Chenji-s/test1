@@ -90,7 +90,7 @@ def get_angle(coords, image_center=50):
     rows = coords[:, 0]  # y坐标，但需要反转
     
     # 对行数进行变换，使得Y轴从下到上增加
-    transformed_rows = -(rows - image_center)
+    transformed_rows = -rows
     
     # 手动进行线性回归计算斜率和截距
     slope, intercept = manual_linear_regression(cols, transformed_rows)
