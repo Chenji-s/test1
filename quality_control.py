@@ -64,22 +64,21 @@ def get_clock_hands(clock_RGB):
 
 
 
-
 def get_angle(coords):
-    # 提取坐标中的行和列
+    # 提取行（row）和列（column）的坐标
     rows = coords[:, 0]
     cols = coords[:, 1]
-
-    # 使用线性回归拟合行列关系 (cols, rows)，返回直线的斜率和截距
-    slope, intercept = np.polyfit(cols, rows, 1)
-
-    # 计算斜率的角度（反正切）
-    angle = np.arctan(slope)
-
-    # 如果斜率为正，将角度从竖直方向开始计算
+    
+    # 进行线性回归，找出最佳拟合线的斜率和截距
+    slope, intercept, _, _, _ = stats.linregress(cols, rows)
+    
+    # 计算最佳拟合线的角度（弧度）
+    angle = np.arctan2(-slope, 1)  # 使用 -slope 因为 y 是行数，x 是列数，方向相反
+    
+    # 将角度转换为 0 到 2π 之间的值
     if angle < 0:
-        angle += np.pi  # 确保角度在 0 到 π 之间
+        angle += 2 * math.pi
+    
+    return angle
 
-    # 将角度转换为 [0, 2π) 的范围
-    return angle 
 
