@@ -66,41 +66,40 @@ def get_clock_hands(clock_RGB):
 
 
 import math
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+
 def manual_linear_regression(x, y):
-    # 数据点的数量
     n = len(x)
-    
-    # 计算所有和
     sum_x = np.sum(x)
     sum_y = np.sum(y)
     sum_x2 = np.sum(x**2)
     sum_xy = np.sum(x * y)
-    
-    # 计算斜率 m
     m = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x**2)
-    
-    # 计算截距 b
     b = (sum_y - m * sum_x) / n
-    
     return m, b
 
-def get_angle(coords, image_center=50):
+def get_angle_direct(coords):
     # 提取列（column）和行（row）的坐标
-    cols = coords[:, 1]  # x坐标，保持不变
-    rows = coords[:, 0]  # y坐标，但需要反转
+    cols = coords[:, 1]  # X坐标
+    rows = coords[:, 0]  # Y坐标
     
-    # 对行数进行变换，使得Y轴从下到上增加
-    transformed_rows = -rows
+    # 进行线性回归拟合
+    slope, intercept = manual_linear_regression(cols, rows)
     
-    # 手动进行线性回归计算斜率和截距
-    slope, intercept = manual_linear_regression(cols, transformed_rows)
+    # 计算拟合线的角度（弧度）
+    angle = np.arctan(slope)
     
-    # 计算最佳拟合线的角度（弧度）
-    angle = np.arctan2(slope, 1)  # 使用 slope 而不是 -slope，因为我们已经进行了行数的反转
+    # 将角度转换为以12点钟为基准的角度 (90度 - 拟合角度)
+    angle_from_12 = math.pi / 2 - angle
     
-    # 将角度转换为 0 到 2π 之间的值
-    if angle < 0:
-        angle += 2 * math.pi
+    # 保证角度在 0 到 2π 之间
+    if angle_from_12 < 0:
+        angle_from_12 += 2 * math.pi
     
     return slope
+
+
+
 
