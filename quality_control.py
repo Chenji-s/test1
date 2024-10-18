@@ -84,21 +84,23 @@ def manual_linear_regression(x, y):
     
     return m, b
 
-def get_angle(coords):
-    # 提取行（row）和列（column）的坐标
-    rows = coords[:, 0]
-    cols = coords[:, 1]
+def get_angle(coords, image_center=50):
+    # 提取列（column）和行（row）的坐标
+    cols = coords[:, 1]  # x坐标，保持不变
+    rows = coords[:, 0]  # y坐标，但需要反转
+    
+    # 对行数进行变换，使得Y轴从下到上增加
+    transformed_rows = -(rows - image_center)
     
     # 手动进行线性回归计算斜率和截距
-    slope, intercept = manual_linear_regression(cols, rows)
+    slope, intercept = manual_linear_regression(cols, transformed_rows)
     
     # 计算最佳拟合线的角度（弧度）
-    angle = np.arctan2(-slope, 1)  # 使用 -slope 因为 y 是行数，x 是列数，方向相反
+    angle = np.arctan2(slope, 1)  # 使用 slope 而不是 -slope，因为我们已经进行了行数的反转
     
     # 将角度转换为 0 到 2π 之间的值
     if angle < 0:
         angle += 2 * math.pi
     
     return slope
-
 
