@@ -65,8 +65,6 @@ def get_clock_hands(clock_RGB):
 
 
 
-import numpy as np
-
 def get_angle(coords):
     # 提取坐标中的行和列
     rows = coords[:, 0]
@@ -83,5 +81,5 @@ def get_angle(coords):
         angle += np.pi  # 确保角度在 0 到 π 之间
 
     # 将角度转换为 [0, 2π) 的范围
-    return angle % (2 * np.pi)
+    return angle 
 
