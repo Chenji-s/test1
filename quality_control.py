@@ -86,7 +86,7 @@ def get_angle_direct(coords):
     rows = coords[:, 0]  # Y坐标
     
     # 进行线性回归拟合
-    slope, intercept = manual_linear_regression(cols, rows)
+    slope, intercept = manual_linear_regression(rows, cols)
     
     # 计算拟合线的角度（弧度）
     angle = np.arctan(slope)
