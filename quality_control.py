@@ -80,25 +80,25 @@ def manual_linear_regression(x, y):
     b = (sum_y - m * sum_x) / n
     return m, b
 
-def get_angle_direct(coords):
-    # 提取列（column）和行（row）的坐标
-    cols = coords[:, 1]  # X坐标
-    rows = coords[:, 0]  # Y坐标
-    
-    # 进行线性回归拟合
-    slope, intercept = manual_linear_regression(rows, cols)
-    
-    # 计算拟合线的角度（弧度）
+
+def get_angle(coords):
+    # 提取坐标中的行和列
+    rows = coords[:, 0]
+    cols = coords[:, 1]
+
+    # 使用线性回归拟合行列关系 (cols, rows)，返回直线的斜率和截距
+    slope, intercept = np.polyfit(cols, rows, 1)
+
+    # 计算斜率的角度（反正切）
     angle = np.arctan(slope)
-    
-    # 将角度转换为以12点钟为基准的角度 (90度 - 拟合角度)
-    angle_from_12 = math.pi / 2 - angle
-    
-    # 保证角度在 0 到 2π 之间
-    if angle_from_12 < 0:
-        angle_from_12 += 2 * math.pi
-    
-    return slope
+
+    # 如果角度小于0，将其调整到正角度
+    if angle < 0:
+        angle += np.pi
+
+    # 确保最终的角度在 [0, 2π) 之间
+    return angle % (2 * np.pi)
+
 
 
 
