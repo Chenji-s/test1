@@ -62,3 +62,26 @@ def get_clock_hands(clock_RGB):
     # 将列表转换为 NumPy 数组并返回
     return np.array(hour_hand_pixels), np.array(minute_hand_pixels)
 
+
+
+
+import numpy as np
+
+def get_angle(coords):
+    # 提取坐标中的行和列
+    rows = coords[:, 0]
+    cols = coords[:, 1]
+
+    # 使用线性回归拟合行列关系 (cols, rows)，返回直线的斜率和截距
+    slope, intercept = np.polyfit(cols, rows, 1)
+
+    # 计算斜率的角度（反正切）
+    angle = np.arctan(slope)
+
+    # 如果斜率为正，将角度从竖直方向开始计算
+    if angle < 0:
+        angle += np.pi  # 确保角度在 0 到 π 之间
+
+    # 将角度转换为 [0, 2π) 的范围
+    return angle % (2 * np.pi)
+
