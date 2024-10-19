@@ -138,7 +138,7 @@ def check_alignment(angle_hour, angle_minute):
     hour_in_minutes=(hour_in_minutes*60) % 60
     
     # 计算分针显示的分钟数
-    minute = (angle_minute / (2 * np.pi)) * 12
+    minute = (angle_minute / (2 * np.pi)) * 60
     
     # 计算对齐误差：分针与时针应显示的分钟数之间的差异
     misalignment = minute - hour_in_minutes
