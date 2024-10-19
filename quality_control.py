@@ -96,6 +96,10 @@ def get_angle(coords):
     angle_degrees = np.degrees(angle_radians)
     angle=90-angle_degrees
 
+# 判断大部分cols是否大于50
+    if np.mean(cols) <= 50:  # 如果大部分数据在50以下
+        angle += 180  # 加上180度（相当于加上π）
+        
     # 确保最终的角度在 [0, 2π) 之间
     return angle* np.pi /180
 
