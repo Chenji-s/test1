@@ -85,6 +85,12 @@ def get_angle(coords):
     # 提取坐标中的行和列，并将行坐标进行转换
     rows = 101 - coords[:, 0]  # 将行坐标转换为符合 xy 坐标系的格式
     cols = coords[:, 1]
+# 如果列坐标几乎相等，表示垂直情况（针在12点或6点位置）
+    if np.std(cols) < 1e-3:  # 标准差非常小，说明列坐标几乎不变
+        if np.mean(rows) > 50:  # 针指向12点
+            return 0  # 角度为0弧度（12点）
+        else:  # 针指向6点
+            return np.pi  # 角度为π弧度（6点）
 
     # 使用线性回归拟合行列关系 (cols, rows)，返回直线的斜率和截距
     slope, intercept = np.polyfit(cols, rows, 1)
