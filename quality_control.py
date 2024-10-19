@@ -92,12 +92,12 @@ def get_angle(coords):
     # 计算斜率的角度（反正切）
     angle = np.arctan(slope)
 
-    # 如果角度小于0，将其调整到正角度
-    if angle < 0:
-        angle += np.pi
+    angle_radians = np.arctan(slope)
+    angle_degrees = np.degrees(angle_radians)
+    angle=90-angle_degrees
 
     # 确保最终的角度在 [0, 2π) 之间
-    return angle % (2 * np.pi)
+    return angle* np.pi /180
 
 
 
