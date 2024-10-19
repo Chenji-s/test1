@@ -134,11 +134,11 @@ def analog_to_digital(angle_hour, angle_minute):
 
 def check_alignment(angle_hour, angle_minute):
     # 计算时针显示的分钟数（将时针的角度转换为分钟数）
-    hour_in_minutes = (angle_hour / (2 * np.pi)) * 60
-    hour_in_minutes = hour_in_minutes % 60  # 将分钟数限制在 0-59 之间
+    hour_in_minutes = (angle_hour / (2 * np.pi)) * 12
+    hour_in_minutes=(hour_in_minutes*60) % 60
     
     # 计算分针显示的分钟数
-    minute = (angle_minute / (2 * np.pi)) * 60
+    minute = (angle_minute / (2 * np.pi)) * 12
     
     # 计算对齐误差：分针与时针应显示的分钟数之间的差异
     misalignment = minute - hour_in_minutes
