@@ -82,8 +82,8 @@ def manual_linear_regression(x, y):
 
 
 def get_angle(coords):
-    # 提取坐标中的行和列
-    rows = coords[:, 0]
+    # 提取坐标中的行和列，并将行坐标进行转换
+    rows = 101 - coords[:, 0]  # 将行坐标转换为符合 xy 坐标系的格式
     cols = coords[:, 1]
 
     # 使用线性回归拟合行列关系 (cols, rows)，返回直线的斜率和截距
