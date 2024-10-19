@@ -99,9 +99,29 @@ def get_angle(coords):
 # 判断大部分cols是否大于50
     if np.mean(cols) <= 50:  # 如果大部分数据在50以下
         angle += 180  # 加上180度（相当于加上π）
-        
+
     # 确保最终的角度在 [0, 2π) 之间
     return angle* np.pi /180
+
+
+
+
+
+def analog_to_digital(angle_hour, angle_minute):
+    # 将时针角度转换为小时
+    hour = (angle_hour / (2 * np.pi)) * 12
+    hour = int(hour)  # 转换为整数小时
+    if hour == 0:
+        hour = 12  # 如果小时数是 0，设为 12
+
+    # 将分针角度转换为分钟
+    minute = (angle_minute / (2 * np.pi)) * 60
+    minute = int(round(minute))  # 将分钟数四舍五入，并转换为整数
+
+    # 格式化小时和分钟，确保小于 10 时添加前导零
+    time_str = f"{hour:02d}:{minute:02d}"
+    
+    return time_str
 
 
 
