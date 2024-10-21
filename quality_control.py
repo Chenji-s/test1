@@ -151,6 +151,45 @@ def check_alignment(angle_hour, angle_minute):
     
     return int(misalignment)
 
-
+def validate_batch(folder_path, tolerance):
+    # 获取当前时间并格式化
+    current_time = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
+    
+    # 获取所有时钟文件（假设文件名格式为 clock_X.png）
+    clock_files = [f for f in os.listdir(folder_path) if f.endswith('.png')]
+    
+    # 初始化计数
+    total_clocks = len(clock_files)
+    passing_clocks = 0
+    clocks_to_adjust = []
+    
+    for clock_file in clock_files:
+        # 读取每个时钟图片的路径
+        clock_path = os.path.join(folder_path, clock_file)
+        
+        # 读取图片并提取时针和分针像素坐标
+        clock_RGB = qc.read_image(clock_path)
+        hour_pixels, minute_pixels = qc.get_clock_hands(clock_RGB)
+        
+        # 计算时针和分针的角度
+        angle_hour = qc.get_angle(hour_pixels)
+        angle_minute = qc.get_angle(minute_pixels)
+        
+        # 计算对齐误差
+        misalignment = qc.check_alignment(angle_hour, angle_minute)
+        
+        # 检查误差是否在容差范围内
+        if abs(misalignment) <= tolerance:
+            passing_clocks += 1
+        else:
+            clocks_to_adjust.append((clock_file, misalignment))
+    
+    # 计算批次质量百分比
+    batch_quality = (passing_clocks / total_clocks) * 100
+    
+    # 对需要调整的时钟按误差从大到小排序
+    clocks_to_adjust.sort(key=lambda x: abs(x[1]), reverse=True)
+    print(batch_quality)
+    print(clocks_to_adjust)
 
 
