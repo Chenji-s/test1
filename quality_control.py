@@ -151,6 +151,9 @@ def check_alignment(angle_hour, angle_minute):
     
     return int(misalignment)
 
+import os
+from datetime import datetime
+
 def validate_batch(folder_path, tolerance):
     # 获取当前时间并格式化
     current_time = datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
