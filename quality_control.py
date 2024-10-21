@@ -31,7 +31,7 @@ def read_image(path, show=False):
 
         plt.show()
 
-    return img,axs
+    return img
 
 
 
