@@ -227,13 +227,14 @@ def check_coupling(path_1, path_2):
     expected_minute_change = (delta_hour / (2 * np.pi)) * 12 * 60
     actual_minute_change = (delta_minute / (2 * np.pi)) * 60
     
-    # Step 3: 计算差异，转化为每小时的增减
+    # 计算分针增减时间每小时的变化量
     discrepancy = actual_minute_change - expected_minute_change
-    discrepancy_per_hour = discrepancy / (expected_minute_change / 60)
+    # 将误差标准化为每小时
+    discrepancy_per_hour = discrepancy * (60 / expected_minute_change)
 
     # 将增减时间转换为分钟和秒
     minutes = int(abs(discrepancy_per_hour))
-    seconds = int(abs((discrepancy_per_hour - minutes) * 60))
+    seconds = int((abs(discrepancy_per_hour) - minutes) * 60)
     
     # Step 4: 判断是否存在耦合问题
     if abs(discrepancy_per_hour) < 1e-2:  # 没有耦合问题
