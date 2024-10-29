@@ -202,42 +202,43 @@ def validate_batch(folder_path, tolerance):
 
 import os
 import numpy as np
+import numpy as np
 
 def check_coupling(path_1, path_2):
-    # 读取两张图片
-    clock_RGB_1 = read_image(path_1)
-    clock_RGB_2 = read_image(path_2)
+    # Step 1: 读取两张图片并计算每个指针的角度
+    clock_RGB1 = qc.read_image(path_1)
+    clock_RGB2 = qc.read_image(path_2)
     
-    # 提取时针和分针像素数据
-    hour_pixels_1, minute_pixels_1 = get_clock_hands(clock_RGB_1)
-    hour_pixels_2, minute_pixels_2 = get_clock_hands(clock_RGB_2)
+    # 提取指针坐标
+    hour_pixels_1, minute_pixels_1 = qc.get_clock_hands(clock_RGB1)
+    hour_pixels_2, minute_pixels_2 = qc.get_clock_hands(clock_RGB2)
     
-    # 计算每张图片的时针和分针角度
-    angle_hour_1 = get_angle(hour_pixels_1)
-    angle_minute_1 = get_angle(minute_pixels_1)
-    angle_hour_2 = get_angle(hour_pixels_2)
-    angle_minute_2 = get_angle(minute_pixels_2)
+    # 计算指针的角度
+    angle_hour_1 = qc.get_angle(hour_pixels_1)
+    angle_minute_1 = qc.get_angle(minute_pixels_1)
+    angle_hour_2 = qc.get_angle(hour_pixels_2)
+    angle_minute_2 = qc.get_angle(minute_pixels_2)
+
+    # Step 2: 计算角度差，确保在 [0, 2π) 范围内
+    delta_hour = (angle_hour_2 - angle_hour_1) % (2 * np.pi)
+    delta_minute = (angle_minute_2 - angle_minute_1) % (2 * np.pi)
     
-    # 计算两张图片之间的时针和分针的错位变化
-    hour_change = (angle_hour_2 - angle_hour_1) / (2 * np.pi) * 12  # 计算小时数
-    minute_change = (angle_minute_2 - angle_minute_1) / (2 * np.pi) * 60  # 计算分钟数
+    # 计算时间变化：时针和分针应转动的理论分钟数
+    expected_minute_change = (delta_hour / (2 * np.pi)) * 12 * 60
+    actual_minute_change = (delta_minute / (2 * np.pi)) * 60
     
-    # 理论上分针应该随着时针变化，计算理论的分针变化
-    expected_minute_change = hour_change * 60
+    # Step 3: 计算差异，转化为每小时的增减
+    discrepancy = actual_minute_change - expected_minute_change
+    discrepancy_per_hour = discrepancy / (expected_minute_change / 60)
+
+    # 将增减时间转换为分钟和秒
+    minutes = int(abs(discrepancy_per_hour))
+    seconds = int(abs((discrepancy_per_hour - minutes) * 60))
     
-    # 检查分针的实际变化与理论变化的差异
-    minute_misalignment = minute_change - expected_minute_change
-    
-    if abs(minute_misalignment) < 1e-3:
-        return 'The hour and minute hand are coupled properly.'
-    
-    # 将差异转换为每小时增减的分钟和秒
-    minute_per_hour = minute_misalignment / hour_change
-    minutes = int(minute_per_hour)
-    seconds = int((minute_per_hour - minutes) * 60)
-    
-    # 返回不同的耦合状态
-    if minute_per_hour > 0:
-        return f'The minute hand gains {abs(minutes)} minutes, {abs(seconds)} seconds per hour.'
-    else:
-        return f'The minute hand loses {abs(minutes)} minutes, {abs(seconds)} seconds per hour.'
+    # Step 4: 判断是否存在耦合问题
+    if abs(discrepancy_per_hour) < 1e-2:  # 没有耦合问题
+        return "The hour and minute hand are coupled properly."
+    elif discrepancy_per_hour > 0:  # 分针转动过快
+        return f"The minute hand gains {minutes} minutes, {seconds} seconds per hour."
+    else:  # 分针转动过慢
+        return f"The minute hand loses {minutes} minutes, {seconds} seconds per hour."
