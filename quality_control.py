@@ -230,7 +230,7 @@ def check_coupling(path_1, path_2):
     # 计算分针增减时间每小时的变化量
     discrepancy = actual_minute_change - expected_minute_change
     # 将误差标准化为每小时
-    discrepancy_per_hour = discrepancy * (60 / expected_minute_change)
+    discrepancy_per_hour = discrepancy * (60 / actual_minute_change)
 
     # 将增减时间转换为分钟和秒
     minutes = int(abs(discrepancy_per_hour))
