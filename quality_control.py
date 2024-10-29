@@ -224,8 +224,8 @@ def check_coupling(path_1, path_2):
     delta_minute = (angle_minute_2 - angle_minute_1) % (2 * np.pi)
     
     # 计算时间变化：时针和分针应转动的理论分钟数
-    expected_minute_change = (delta_hour / (2 * np.pi)) * 12 * 60
-    actual_minute_change = (delta_minute / (2 * np.pi)) * 60
+    expected_minute_change = (delta_hour) / np.pi * 720
+    actual_minute_change = (delta_minute )/ np.pi * 60
     
     # 计算分针增减时间每小时的变化量
     discrepancy = actual_minute_change - expected_minute_change
