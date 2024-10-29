@@ -205,18 +205,18 @@ import numpy as np
 
 def check_coupling(path_1, path_2):
     # 读取两张图片
-    clock_RGB_1 = qc.read_image(path_1)
-    clock_RGB_2 = qc.read_image(path_2)
+    clock_RGB_1 = read_image(path_1)
+    clock_RGB_2 = read_image(path_2)
     
     # 提取时针和分针像素数据
-    hour_pixels_1, minute_pixels_1 = qc.get_clock_hands(clock_RGB_1)
-    hour_pixels_2, minute_pixels_2 = qc.get_clock_hands(clock_RGB_2)
+    hour_pixels_1, minute_pixels_1 = get_clock_hands(clock_RGB_1)
+    hour_pixels_2, minute_pixels_2 = get_clock_hands(clock_RGB_2)
     
     # 计算每张图片的时针和分针角度
-    angle_hour_1 = qc.get_angle(hour_pixels_1)
-    angle_minute_1 = qc.get_angle(minute_pixels_1)
-    angle_hour_2 = qc.get_angle(hour_pixels_2)
-    angle_minute_2 = qc.get_angle(minute_pixels_2)
+    angle_hour_1 = get_angle(hour_pixels_1)
+    angle_minute_1 = get_angle(minute_pixels_1)
+    angle_hour_2 = get_angle(hour_pixels_2)
+    angle_minute_2 = get_angle(minute_pixels_2)
     
     # 计算两张图片之间的时针和分针的错位变化
     hour_change = (angle_hour_2 - angle_hour_1) / (2 * np.pi) * 12  # 计算小时数
