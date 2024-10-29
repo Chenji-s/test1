@@ -206,18 +206,18 @@ import numpy as np
 
 def check_coupling(path_1, path_2):
     # Step 1: 读取两张图片并计算每个指针的角度
-    clock_RGB1 = qc.read_image(path_1)
-    clock_RGB2 = qc.read_image(path_2)
+    clock_RGB1 = read_image(path_1)
+    clock_RGB2 = read_image(path_2)
     
     # 提取指针坐标
-    hour_pixels_1, minute_pixels_1 = qc.get_clock_hands(clock_RGB1)
-    hour_pixels_2, minute_pixels_2 = qc.get_clock_hands(clock_RGB2)
+    hour_pixels_1, minute_pixels_1 = get_clock_hands(clock_RGB1)
+    hour_pixels_2, minute_pixels_2 = get_clock_hands(clock_RGB2)
     
     # 计算指针的角度
-    angle_hour_1 = qc.get_angle(hour_pixels_1)
-    angle_minute_1 = qc.get_angle(minute_pixels_1)
-    angle_hour_2 = qc.get_angle(hour_pixels_2)
-    angle_minute_2 = qc.get_angle(minute_pixels_2)
+    angle_hour_1 = get_angle(hour_pixels_1)
+    angle_minute_1 = get_angle(minute_pixels_1)
+    angle_hour_2 = get_angle(hour_pixels_2)
+    angle_minute_2 = get_angle(minute_pixels_2)
 
     # Step 2: 计算角度差，确保在 [0, 2π) 范围内
     delta_hour = (angle_hour_2 - angle_hour_1) % (2 * np.pi)
