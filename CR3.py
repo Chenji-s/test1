@@ -10,3 +10,4 @@ def even_sum(n):
         # Update the Fibonacci numbers: calculate the next Fibonacci number
         fib1, fib2 = fib2, fib1 + fib2  
     return total 
+even_sum(n)
