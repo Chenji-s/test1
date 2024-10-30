@@ -230,9 +230,9 @@ def check_coupling(path_1, path_2):
        time_in_h = (hour2-hour1)*60
     else:
        time_in_h = (hour2+12-hour1)*60
-       
+
     time_in_m = minute2+(time_in_h//60)*60-minute1
-    discrepancy_per_hour= abs(time_in_m-time_in_h)/time_in_m *60
+    discrepancy_per_hour= (time_in_m-time_in_h)/time_in_m *60
     minutes = int(abs(discrepancy_per_hour))
     seconds = int((abs(discrepancy_per_hour) - minutes) * 60)
 
