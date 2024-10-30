@@ -219,23 +219,18 @@ def check_coupling(path_1, path_2):
     angle_hour_2 = get_angle(hour_pixels_2)
     angle_minute_2 = get_angle(minute_pixels_2)
 
-    # Step 2: 计算角度差，确保在 [0, 2π) 范围内
-    delta_hour = (angle_hour_2 - angle_hour_1) % (2 * np.pi)
-    delta_minute = (angle_minute_2 - angle_minute_1) % (2 * np.pi)
+    # 将角度转换为小时和分钟
+    hour1=(angle_hour_1 / (2 * np.pi) * 12) % 12
+    hour2=(angle_hour_2 / (2 * np.pi) * 12) % 12
+    minute1=(angle_minute_1/ (2 * np.pi) * 60) % 60
+    minute2=(angle_minute_2/ (2 * np.pi) * 60) % 60
     
-    # 计算时间变化：时针和分针应转动的理论分钟数
-    expected_minute_change = (delta_hour) / np.pi * 720
-    actual_minute_change = (delta_minute )/ np.pi * 60
-    
-    # 计算分针增减时间每小时的变化量
-    discrepancy = actual_minute_change - expected_minute_change
-    # 将误差标准化为每小时
-    discrepancy_per_hour = discrepancy * (60 / actual_minute_change)
-
-    # 将增减时间转换为分钟和秒
+    # 计算时间差
+    time_in_h = (hour2-hour1)*60
+    time_in_m = minute2+(time_in_h//60)*60-minute1
+    discrepancy_per_hour= abs(time_in_h-time_in_m)/time_in_m *60
     minutes = int(abs(discrepancy_per_hour))
     seconds = int((abs(discrepancy_per_hour) - minutes) * 60)
-    
     # Step 4: 判断是否存在耦合问题
     if abs(discrepancy_per_hour) < 1e-2:  # 没有耦合问题
         return "The hour and minute hand are coupled properly."
