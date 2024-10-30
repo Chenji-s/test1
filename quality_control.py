@@ -168,15 +168,15 @@ def validate_batch(folder_path, clock_files, current_time, tolerance):
         clock_path = f"{folder_path}/{clock_file}"
 
         # 读取图片并提取时针和分针像素坐标
-        clock_RGB = qc.read_image(clock_path)
-        hour_pixels, minute_pixels = qc.get_clock_hands(clock_RGB)
+        clock_RGB = read_image(clock_path)
+        hour_pixels, minute_pixels = get_clock_hands(clock_RGB)
         
         # 计算时针和分针的角度
-        angle_hour = qc.get_angle(hour_pixels)
-        angle_minute = qc.get_angle(minute_pixels)
+        angle_hour = get_angle(hour_pixels)
+        angle_minute = get_angle(minute_pixels)
 
         # 计算对齐误差
-        misalignment = qc.check_alignment(angle_hour, angle_minute)
+        misalignment = check_alignment(angle_hour, angle_minute)
         
         # 检查误差是否在容差范围内
         if abs(misalignment) <= tolerance:
