@@ -156,69 +156,69 @@ def check_alignment(angle_hour, angle_minute):
     return int(misalignment)
 
 import numpy as np
+import numpy as np
 
-def validate_batch(folder_path, clock_files, current_time, tolerance):
+def validate_batch(folder_path, tolerance):
+    # 手动定义当前时间
+    current_time = "2024-10-18, 22:36:00"  # 手动设置时间
+    
+    # 手动定义批次号
+    batch_number = folder_path.split('_')[-1]  # 从路径中提取批次号
+
     # 初始化计数
+    clock_files = [f'clock_{i}.png' for i in range(1, 21)]  # 假设每个批次包含20个时钟文件
     total_clocks = len(clock_files)
     passing_clocks = 0
     clocks_to_adjust = []
-    
+
     for clock_file in clock_files:
-        # 获取图片的完整路径
-        clock_path = f"{folder_path}/{clock_file}"
+        # 读取每个时钟图片的路径
+        clock_path = f'{folder_path}/{clock_file}'
 
         # 读取图片并提取时针和分针像素坐标
-        clock_RGB = read_image(clock_path)
-        hour_pixels, minute_pixels = get_clock_hands(clock_RGB)
-        
+        clock_RGB = qc.read_image(clock_path)
+        hour_pixels, minute_pixels = qc.get_clock_hands(clock_RGB)
+
         # 计算时针和分针的角度
-        angle_hour = get_angle(hour_pixels)
-        angle_minute = get_angle(minute_pixels)
+        angle_hour = qc.get_angle(hour_pixels)
+        angle_minute = qc.get_angle(minute_pixels)
 
         # 计算对齐误差
-        misalignment = check_alignment(angle_hour, angle_minute)
-        
+        misalignment = qc.check_alignment(angle_hour, angle_minute)
+
         # 检查误差是否在容差范围内
         if abs(misalignment) <= tolerance:
             passing_clocks += 1
         else:
             clocks_to_adjust.append((clock_file, misalignment))
-    
+
     # 计算批次质量百分比
     batch_quality = (passing_clocks / total_clocks) * 100
-    
+
     # 对需要调整的时钟按误差从大到小排序
     clocks_to_adjust.sort(key=lambda x: abs(x[1]), reverse=True)
 
-    # 假设 batch_number 是从文件夹名称中提取的
-    batch_number = folder_path.split('_')[-1]  # 根据你的路径结构假设
-
-    # 报告文件路径
+    # 生成报告文件路径
     report_filename = f'batch_{batch_number}_QC.txt'
-    report_filepath = f"{folder_path}/{report_filename}"
+    report_filepath = f'QC_reports/{report_filename}'
 
-    # 写入报告
+    # 创建QC_reports文件夹（假设它已经存在）
     with open(report_filepath, 'w') as report_file:
+        # 写入报告内容
         report_file.write(f"Batch number: {batch_number}\n")
         report_file.write(f"Checked on {current_time}\n")
         report_file.write(f"Total number of clocks: {total_clocks}\n")
         report_file.write(f"Number of clocks passing quality control ({tolerance}-minute tolerance): {passing_clocks}\n")
         report_file.write(f"Batch quality: {batch_quality:.1f}%\n")
         report_file.write("Clocks to send back for readjustment:\n")
-        
+
         for clock_file, misalignment in clocks_to_adjust:
             sign = "+" if misalignment > 0 else ""
             report_file.write(f"{clock_file} {sign}{misalignment}min\n")
-    
+
     print(f"Report generated: {report_filepath}")
 
-# 使用示例：
-folder_path = "/path/to/batch_1"  # 替换为实际路径
-clock_files = ["clock_1.png", "clock_2.png", "clock_3.png"]  # 替换为实际文件名
-current_time = "2024-10-18, 22:36:00"  # 需要手动传入当前时间
-tolerance = 4  # 容差
 
-validate_batch(folder_path, clock_files, current_time, tolerance)
 
 
 import os
